@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, Star } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { toast } from "sonner";
 
 function HeroMockup() {
   return (
@@ -49,14 +50,28 @@ export function HeroSection() {
               <p className="mt-6 text-lg text-muted-foreground max-w-lg">
                 ListingShield monitors Etsy every day and alerts you the moment someone copies your titles or photos.
               </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Button size="xl" asChild><Link to="/signup">Start 7-Day Free Trial</Link></Button>
-                <Button variant="ghost" size="xl" asChild><a href="#how-it-works">See How It Works</a></Button>
+              <div className="mt-8">
+                <p className="mb-4 text-sm font-semibold flex items-center gap-2">
+                  <Badge variant="secondary" className="bg-primary/10 text-primary border-none">Early Access</Badge>
+                  Join the waitlist for the public beta.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 max-w-md">
+                  <div className="flex-1 relative">
+                    <input
+                      type="email"
+                      placeholder="Enter your shop email..."
+                      className="w-full h-12 rounded-lg border bg-background px-4 text-sm focus:ring-2 focus:ring-primary outline-none transition-all"
+                    />
+                  </div>
+                  <Button size="lg" className="h-12 px-8" onClick={() => toast.success("You're on the list!")}>
+                    Join Waitlist
+                  </Button>
+                </div>
               </div>
               <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> No credit card required</span>
-                <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> Setup in 2 minutes</span>
-                <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> Cancel anytime</span>
+                <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> Integrated with Etsy API v3</span>
+                <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> AI-powered scan engine</span>
+                <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> No setup fee</span>
               </div>
             </div>
             <div className="relative lg:pl-8">

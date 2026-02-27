@@ -41,21 +41,49 @@ serve(async (req) => {
 
         if (listErr) throw listErr
 
-        // 3. Create a fake match
-        const { error: matchErr } = await supabaseAdmin.from('matches').insert({
-            shop_id: shop.id,
-            listing_id: listing.id,
-            suspected_etsy_listing_id: 'COPY_999',
-            suspected_shop_name: 'CheapImportsHQ',
-            suspected_listing_url: 'https://etsy.com',
-            suspected_title: 'Minimalist White Vase - Home Decor (Direct Factory)',
-            suspected_image_url: 'https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=800',
-            title_similarity: 0.94,
-            image_similarity: 0.98,
-            status: 'new'
-        })
+        // 3. Create fake matches
+        const matchesToInsert = [
+            {
+                shop_id: shop.id,
+                listing_id: listing.id,
+                suspected_etsy_listing_id: 'COPY_999',
+                suspected_shop_name: 'CheapImportsHQ',
+                suspected_listing_url: 'https://etsy.com',
+                suspected_title: 'Minimalist White Vase - Home Decor (Direct Factory)',
+                suspected_image_url: 'https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=800',
+                match_type: 'both',
+                title_similarity: 0.94,
+                image_similarity: 0.98,
+                status: 'new'
+            },
+            {
+                shop_id: shop.id,
+                listing_id: listing.id,
+                suspected_etsy_listing_id: 'COPY_888',
+                suspected_shop_name: 'DuoDecorStore',
+                suspected_listing_url: 'https://etsy.com',
+                suspected_title: 'Handcrafted Matte White Vase - Minimalist Style',
+                suspected_image_url: 'https://images.unsplash.com/photo-1612196808214-b7e239e5f6b7?w=800',
+                match_type: 'title',
+                title_similarity: 0.82,
+                image_similarity: 0.45,
+                status: 'new'
+            }
+        ]
+
+        const { error: matchErr } = await supabaseAdmin.from('matches').insert(matchesToInsert)
 
         if (matchErr) throw matchErr
+
+        // 4. Create a fake scan log
+        await supabaseAdmin.from('scan_logs').insert({
+            shop_id: shop.id,
+            status: 'completed',
+            listings_scanned: 1,
+            matches_found: 2,
+            started_at: new Date(Date.now() - 3600000).toISOString(),
+            completed_at: new Date().toISOString(),
+        })
 
         return new Response(JSON.stringify({ success: true }), {
             headers: { ...corsHeaders, 'Content-Type': 'application/json' },
