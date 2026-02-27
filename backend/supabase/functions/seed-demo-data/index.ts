@@ -15,10 +15,21 @@ serve(async (req) => {
             Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
         )
 
-        const authHeader = req.headers.get('Authorization')!
-        const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(authHeader.replace('Bearer ', ''))
+        const authHeader = req.headers.get('Authorization')
+        if (!authHeader) {
+            return new Response(JSON.stringify({ error: 'Missing Authorization header' }), {
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                status: 401,
+            })
+        }
 
-        if (authError || !user) throw new Error('Not authenticated')
+        const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(authHeader.replace('Bearer ', ''))
+        if (authError || !user) {
+            return new Response(JSON.stringify({ error: 'Not authenticated or invalid token' }), {
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                status: 401,
+            })
+        }
 
         // 1. Create a fake shop
         const { data: shop, error: shopErr } = await supabaseAdmin.from('shops').upsert({

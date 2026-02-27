@@ -46,9 +46,17 @@ export default function Dashboard() {
             <Link to="/onboarding">Connect Etsy Shop</Link>
           </Button>
           <Button variant="outline" size="lg" onClick={async () => {
-            const { error } = await supabase.functions.invoke('seed-demo-data');
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+              toast.error("Please sign in first to seed demo data.");
+              return;
+            }
+
+            const { data, error } = await supabase.functions.invoke('seed-demo-data');
             if (error) {
-              toast.error("Please deploy the 'seed-demo-data' function first.");
+              console.error("Seed error:", error);
+              const errorMsg = await error.context?.json?.().then((j: any) => j.error) || error.message || "Unknown error";
+              toast.error(`Seed failed: ${errorMsg}`);
             } else {
               toast.success("Demo data seeded! Refreshing...");
               window.location.reload();
