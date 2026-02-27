@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useDashboardData } from "@/hooks/use-dashboard-data";
 import { formatDistanceToNow } from "date-fns";
+import { supabase } from "@/lib/supabase";
 
 export default function Dashboard() {
   const { shop, stats, recentMatches, scanHistory, isLoading } = useDashboardData();
@@ -32,14 +33,30 @@ export default function Dashboard() {
 
   if (!shop) {
     return (
-      <Card className="p-12 text-center max-w-2xl mx-auto mt-12">
-        <h2 className="text-2xl font-bold mb-4">No shop connected.</h2>
+      <Card className="p-12 text-center max-w-2xl mx-auto mt-12 border-dashed">
+        <div className="bg-primary/10 h-16 w-16 rounded-full flex items-center justify-center mx-auto mb-6">
+          <ShieldCheck className="h-8 w-8 text-primary" />
+        </div>
+        <h2 className="text-2xl font-bold mb-4">Welcome to EtsyGuard</h2>
         <p className="text-muted-foreground mb-8">
-          Connect your Etsy shop to start monitoring your listings for copies.
+          Your shop isn't connected yet. While we wait for Etsy API approval, you can populate your dashboard with sample data to test out the features.
         </p>
-        <Button asChild size="lg">
-          <Link to="/onboarding">Connect Etsy Shop</Link>
-        </Button>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Button asChild size="lg">
+            <Link to="/onboarding">Connect Etsy Shop</Link>
+          </Button>
+          <Button variant="outline" size="lg" onClick={async () => {
+            const { error } = await supabase.functions.invoke('seed-demo-data');
+            if (error) {
+              toast.error("Please deploy the 'seed-demo-data' function first.");
+            } else {
+              toast.success("Demo data seeded! Refreshing...");
+              window.location.reload();
+            }
+          }}>
+            Seed Demo Data
+          </Button>
+        </div>
       </Card>
     );
   }
