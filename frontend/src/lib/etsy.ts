@@ -13,7 +13,7 @@ export async function etsyGet(
     const res = await fetch(url.toString(), {
         headers: {
             Authorization: `Bearer ${accessToken}`,
-            'x-api-key': process.env.ETSY_API_KEY!,
+            'x-api-key': import.meta.env.VITE_ETSY_API_KEY || '',
         },
     });
 

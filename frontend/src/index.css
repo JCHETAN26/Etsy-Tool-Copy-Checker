@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 6% 97%;
+    --foreground: 24 10% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 24 10% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 24 10% 10%;
+    --primary: 25 95% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 30 6% 94%;
+    --secondary-foreground: 24 10% 10%;
+    --muted: 30 6% 94%;
+    --muted-foreground: 25 5% 45%;
+    --accent: 30 6% 94%;
+    --accent-foreground: 24 10% 10%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 48 96% 47%;
+    --warning-foreground: 24 10% 10%;
+    --border: 20 6% 90%;
+    --input: 20 6% 90%;
+    --ring: 25 95% 53%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 24 10% 10%;
+    --sidebar-primary: 25 95% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 30 6% 96%;
+    --sidebar-accent-foreground: 24 10% 10%;
+    --sidebar-border: 20 6% 90%;
+    --sidebar-ring: 25 95% 53%;
+  }
+
+  .dark {
+    --background: 24 10% 10%;
+    --foreground: 40 6% 97%;
+    --card: 24 10% 12%;
+    --card-foreground: 40 6% 97%;
+    --popover: 24 10% 12%;
+    --popover-foreground: 40 6% 97%;
+    --primary: 25 95% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 24 10% 16%;
+    --secondary-foreground: 40 6% 97%;
+    --muted: 24 10% 16%;
+    --muted-foreground: 25 5% 60%;
+    --accent: 24 10% 16%;
+    --accent-foreground: 40 6% 97%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 48 96% 47%;
+    --warning-foreground: 24 10% 10%;
+    --border: 24 10% 18%;
+    --input: 24 10% 18%;
+    --ring: 25 95% 53%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
