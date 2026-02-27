@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check, Star } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
 
 function HeroMockup() {
   return (
@@ -58,12 +59,38 @@ export function HeroSection() {
                 <div className="flex flex-col sm:flex-row gap-3 max-w-md">
                   <div className="flex-1 relative">
                     <input
+                      id="waitlist-email"
                       type="email"
                       placeholder="Enter your shop email..."
                       className="w-full h-12 rounded-lg border bg-background px-4 text-sm focus:ring-2 focus:ring-primary outline-none transition-all"
                     />
                   </div>
-                  <Button size="lg" className="h-12 px-8" onClick={() => toast.success("You're on the list!")}>
+                  <Button
+                    size="lg"
+                    className="h-12 px-8"
+                    onClick={async () => {
+                      const emailInput = document.getElementById('waitlist-email') as HTMLInputElement;
+                      const email = emailInput?.value;
+
+                      if (!email || !email.includes('@')) {
+                        toast.error("Please enter a valid email");
+                        return;
+                      }
+
+                      const { error } = await supabase.from('waitlist').insert({ email });
+
+                      if (error) {
+                        if (error.code === '23505') {
+                          toast.success("You're already on the list!");
+                        } else {
+                          toast.error("Something went wrong. Try again.");
+                        }
+                      } else {
+                        toast.success("You're on the list! We'll email you soon.");
+                        if (emailInput) emailInput.value = '';
+                      }
+                    }}
+                  >
                     Join Waitlist
                   </Button>
                 </div>
