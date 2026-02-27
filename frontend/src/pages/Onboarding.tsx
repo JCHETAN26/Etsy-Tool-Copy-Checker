@@ -139,8 +139,17 @@ export default function Onboarding() {
               {isProcessing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               Connect with Etsy
             </Button>
-            <div className="flex items-center justify-center gap-2 mt-4 text-xs text-muted-foreground">
-              <Lock className="h-3 w-3" /> Secure OAuth connection. Your credentials are never stored.
+            <div className="flex flex-col gap-4 mt-6">
+              <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                <Lock className="h-3 w-3" /> Secure OAuth connection. Your credentials are never stored.
+              </div>
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
+                <span className="relative bg-background px-2 text-xs uppercase text-muted-foreground">Or</span>
+              </div>
+              <Button variant="ghost" className="text-primary hover:text-primary hover:bg-primary/5" asChild>
+                <Link to="/dashboard">Skip for now & Try Demo →</Link>
+              </Button>
             </div>
           </>
         )}
